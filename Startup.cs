@@ -23,9 +23,9 @@ namespace WebAPI
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables()
 
-                .AddConfigServer(env)
+                .AddConfigServer(env);
 
-                .AddCloudFoundry();
+                //.AddCloudFoundry();
             Configuration = builder.Build();
         }
 
