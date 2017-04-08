@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Steeltoe.Extensions.Configuration;
+using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
+using WebAPI.Models;
 
 namespace WebAPI
 {
@@ -17,7 +20,9 @@ namespace WebAPI
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables()
+
+                .AddCloudFoundry();
             Configuration = builder.Build();
         }
 
@@ -28,6 +33,10 @@ namespace WebAPI
         {
             // Add framework services.
             services.AddMvc();
+
+            // Add Context and use Postgres as provider ... provider will be configured from VCAP_ info
+
+            services.AddDbContext<TreasureContext>(options => options.UseNpgsql(Configuration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +46,8 @@ namespace WebAPI
             loggerFactory.AddDebug();
 
             app.UseMvc();
+
+            SampleData.InitializeMyContexts(app.ApplicationServices).Wait();
         }
     }
 }
