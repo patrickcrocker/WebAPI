@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var treasure = await _context.Treasure.SingleOrDefaultAsync(m => m.ID == id);
+            var treasure = await _context.Treasure.SingleOrDefaultAsync(m => m.Id == id);
 
             if (treasure == null)
             {
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != treasure.ID)
+            if (id != treasure.Id)
             {
                 return BadRequest();
             }
@@ -97,7 +97,7 @@ namespace WebAPI.Controllers
             }
             catch (DbUpdateException)
             {
-                if (TreasureExists(treasure.ID))
+                if (TreasureExists(treasure.Id))
                 {
                     return new StatusCodeResult(StatusCodes.Status409Conflict);
                 }
@@ -107,7 +107,7 @@ namespace WebAPI.Controllers
                 }
             }
 
-            return CreatedAtAction("GetTreasure", new { id = treasure.ID }, treasure);
+            return CreatedAtAction("GetTreasure", new { id = treasure.Id }, treasure);
         }
 
         // DELETE: api/Treasures/5
@@ -119,7 +119,7 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var treasure = await _context.Treasure.SingleOrDefaultAsync(m => m.ID == id);
+            var treasure = await _context.Treasure.SingleOrDefaultAsync(m => m.Id == id);
             if (treasure == null)
             {
                 return NotFound();
@@ -133,7 +133,7 @@ namespace WebAPI.Controllers
 
         private bool TreasureExists(int id)
         {
-            return _context.Treasure.Any(e => e.ID == id);
+            return _context.Treasure.Any(e => e.Id == id);
         }
     }
 }

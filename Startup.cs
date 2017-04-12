@@ -8,8 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Steeltoe.Extensions.Configuration;
-using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
-using Steeltoe.CloudFoundry.Connector.OAuth;
+using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 using WebAPI.Models;
 
 namespace WebAPI
@@ -23,9 +22,8 @@ namespace WebAPI
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables()
 
-                .AddConfigServer(env)
-
                 .AddCloudFoundry();
+
             Configuration = builder.Build();
         }
 
@@ -40,7 +38,7 @@ namespace WebAPI
             //      services.AddOptions();
             //      services.Configure<ConfigServerClientSettingsOptions>(config);
             //      services.AddSingleton<IConfigurationRoot>(config);
-            services.AddConfigServer(Configuration);
+            //services.AddConfigServer(Configuration);
 
             //// Configure and Add IOptions<OAuthServiceOptions> to the container
             //services.AddOAuthServiceOptions(Configuration);
@@ -48,8 +46,8 @@ namespace WebAPI
             // Add framework services.
             services.AddMvc();
 
-            // Add Context and use Postgres as provider ... provider will be configured from VCAP_ info
-            services.AddDbContext<TreasureContext>(options => options.UseNpgsql(Configuration));
+            // Add Context and use MySql as provider ... provider will be configured from VCAP_ info
+            services.AddDbContext<TreasureContext>(options => options.UseMySql(Configuration));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +58,7 @@ namespace WebAPI
 
             app.UseMvc();
 
-            SampleData.InitializeMyContexts(app.ApplicationServices).Wait();
+            SampleData.InitializeMyContexts(app.ApplicationServices);
         }
     }
 }

@@ -3,8 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Models;
 
-namespace WebAPI.Models
+namespace WebAPI
 {
     public class TreasureContext : DbContext
     {
@@ -13,6 +14,6 @@ namespace WebAPI.Models
         {
         }
 
-        public DbSet<WebAPI.Models.Treasure> Treasure { get; set; }
+        public DbSet<Treasure> Treasure { get; set; }
     }
 }

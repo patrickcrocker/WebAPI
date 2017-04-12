@@ -1,0 +1,7 @@
+﻿---
+applications:
+- name: webapi-connector
+  env:
+    ASPNETCORE_ENVIRONMENT: Development
+  services:
+   - webapidb
